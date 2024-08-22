@@ -20,11 +20,11 @@ Esta aplicação é uma API de serviço construída em Python usando Flask. Ela 
 
    Clone este repositório para o seu ambiente local:
 
-   git clone https://github.com/seu-usuario/weather-api.git
-   cd weather-api
+  `git clone https://github.com/seu-usuario/weather-api.git`
+   `cd weather-api`
 
 # Inicialização do serviço
-docker-compose up
+`docker-compose up`
 
 # Ferramenta de teste de API(Postman e afins) 
   
@@ -54,20 +54,20 @@ docker-compose up
 
   - execute os comandos:
 
-    docker ps
+    `docker ps`
 
-    docker exec -it <container_id> mongosh
+    `docker exec -it <container_id> mongosh`
 
-    show dbs
+    `show dbs`
 
-    use weather_db
+    `use weather_db`
 
-    show collections
+    `show collections`
 
-    db.cities.find().pretty()
+    `db.cities.find().pretty()`
 
 # Encerramento do serviço
-docker-compose down
+`docker-compose down`
 
 
 # Execução do teste
@@ -81,17 +81,17 @@ Passos necessários:
   Instalação do mongoDB - (https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi)
 
   # Criação do ambiente virtual
-  python3 -m venv venv
+  `python3 -m venv venv`
 
   # Ativação o ambiente virtual
   ## LINUX
-  source venv/bin/activate
+  `source venv/bin/activate`
 
   ## WINDOWS
-  venv\Scripts\activate
+  `venv\Scripts\activate`
 
   # Instalação dos pacotes no ambiente virtual
-  pip install -r requirements.txt
+  `pip install -r requirements.txt`
 
 
 
@@ -99,7 +99,7 @@ Passos necessários:
   atribua 'test' à variável de ambiente FLASK_ENV no arquivo .env na raíz do projeto
   FLASK_ENV=test
 
-  pytest -s test/test_app.py
+  `pytest -s test/test_app.py`
 
 
 
