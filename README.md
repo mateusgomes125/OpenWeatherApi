@@ -20,7 +20,8 @@ Esta aplicação é uma API de serviço construída em Python usando Flask. Ela 
 
    Clone este repositório para o seu ambiente local:
 
-  `git clone https://github.com/seu-usuario/weather-api.git`
+  `git clone https://github.com/mateusgomes125/OpenWeatherApi.git`
+  
    `cd weather-api`
 
 # Inicialização do serviço
