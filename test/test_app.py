@@ -9,19 +9,19 @@ class TestWeatherAPI(TestCase):
     def setUp(self):
         self.app = app
         self.client = self.app.test_client()
-        self.app.cities_collection.drop()  # Limpa a coleção de teste antes de cada teste
+        self.app.cities_collection.drop()  # Clears the test collection before each test
         self.db = self.app.cities_collection
 
     def test_multiple_users(self):
-        # Testa a coleta de dados para múltiplos usuários
+        # Tests data collection for multiple users
         user_ids = [i for i in range(10)]
         for user_id in user_ids:
             print(f"USER: {user_id}")
             self.client.post('/weather', json={"user_id": user_id})
 
-        # Espera 10 segundos para permitir a coleta dos dados
+        # Waits 10 seconds to allow data collection
         import time
-        time.sleep(10)  # Ajuste o tempo conforme necessário para garantir a coleta
+        time.sleep(10)  # Checks the progress for each user
 
         # Verifica o progresso para cada usuário
         for user_id in user_ids:

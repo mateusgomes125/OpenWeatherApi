@@ -1,59 +1,59 @@
 # Weather API
 
-Esta aplicação é uma API de serviço construída em Python usando Flask. Ela coleta dados meteorológicos de várias cidades usando a API do OpenWeather e armazena essas informações em um banco de dados MongoDB. A aplicação é configurada para rodar em um contêiner Docker, garantindo fácil portabilidade e consistência de ambiente.
+This application is a service API built in Python using Flask. It collects weather data from various cities using the OpenWeather API and stores this information in a MongoDB database. The application is configured to run in a Docker container, ensuring easy portability and environment consistency.
 
-## Funcionalidades
+## Features
 
-- **POST `/weather`**: Recebe um `user_id`, coleta dados meteorológicos de cidades específicas e armazena no banco de dados.
-- **GET `/weather/<user_id>`**: Retorna o progresso da coleta de dados meteorológicos para o `user_id` fornecido.
-- **GET `/city/<user_id>`**: Retorna cidades cadastradas associadas ao usuário `user_id` fornecido.
+- **POST `/weather`**: Receives a `user_id`, collects weather data from specific cities, and stores it in the database.
+- **GET `/weather/<user_id>`**: Returns the progress of weather data collection for the given `user_id`.
+- **GET `/city/<user_id>`**: Returns the cities associated with the provided `user_id`.
 
-## Pré-requisitos
+## Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [MongoDB](https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi)
 
-## Configuração e Execução
+## Setup and Execution
 
-1. **Clone o Repositório**
+1. **Clone the Repository**
 
-   Clone este repositório para o seu ambiente local:
+   Clone this repository to your local environment:
 
   `git clone https://github.com/mateusgomes125/OpenWeatherApi.git`
   
    `cd weather-api`
 
-# Inicialização do serviço
+# Starting the Service
 `docker-compose up`
 
-# Ferramenta de teste de API(Postman e afins) 
+# API Testing Tool (Postman, etc.)
   
-  ## Para iniciar o processo da API
+  ## To Start the API Process
 
-  método: POST
-  rota: http://127.0.0.1:5000/weather
+  Method: POST
+  Endpoint: http://127.0.0.1:5000/weather
 
   JSON body
   {
     "user_id": "12345"
   }
 
-  ## Para acompanhar o progresso da operação da rota POST
-  método: GET
-  rota: http://127.0.0.1:5000/weather/<user_id>
+  ## To Monitor the Progress of the POST Operation
+  Method: GET
+  Endpoint: http://127.0.0.1:5000/weather/<user_id>
 
 
-  ## Para verificar as cidades obtidas por usuário
-  método: GET
-  rota: http://127.0.0.1:5000/city/<user_id>
+  ## To Check the Cities Retrieved by User
+  Method: GET
+  Endpoint: http://127.0.0.1:5000/city/<user_id>
 
 
-# Verificação dos registros inseridos no banco
+# Checking the Records Inserted into the Database
 
-  - Abra outro terminal
+  - Open another terminal
 
-  - execute os comandos:
+  - Execute the following commands:
 
     `docker ps`
 
@@ -67,38 +67,37 @@ Esta aplicação é uma API de serviço construída em Python usando Flask. Ela 
 
     `db.cities.find().pretty()`
 
-# Encerramento do serviço
+# Stopping the Service
 `docker-compose down`
 
 
-# Execução do teste
+# Running Tests
  
-Para execução do teste, é necessário rodar a API localmente.
-Passos necessários:
-  Instalação do Python, versão 3.10 - (https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz)
+To run the tests, you need to run the API locally. Here are the necessary steps:
 
-  Instalação do gerenciador de dependências pip execute o comando `pip install pip`
+  Install Python, version 3.10 - (https://www.python.org/ftp/python/3.10.14/Python-3.10.14.tgz)
+
+  Install the dependency manager `pip install pip`
   
-  Instalação do mongoDB - (https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi)
+  Install MongoDB - (https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi)
 
-  # Criação do ambiente virtual
+  # Creating the Virtual Environment
   `python3 -m venv venv`
 
-  # Ativação o ambiente virtual
+  # Activating the Virtual Environment
   ## LINUX
   `source venv/bin/activate`
 
   ## WINDOWS
   `venv\Scripts\activate`
 
-  # Instalação dos pacotes no ambiente virtual
+  # Installing Packages in the Virtual Environment
   `pip install -r requirements.txt`
 
 
 
-  # Excução do teste
-  atribua 'test' à variável de ambiente FLASK_ENV no arquivo .env na raíz do projeto
-  FLASK_ENV=test
+  # Running the Tests
+    Assign 'test' to the FLASK_ENV environment variable in the .env file at the project root:
 
   `pytest -s test/test_app.py`
 

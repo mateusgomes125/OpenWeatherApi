@@ -8,7 +8,7 @@ executor = Executor(app)
 
 flask_env = os.getenv('FLASK_ENV')
 
-# Configuração do MongoDB
+# MongoDB Configuration
 app.config['MONGO_URI'] = os.getenv('MONGO_URI') if flask_env == 'test' else os.getenv('MONGO_URI_TEST')
 
 app.config['OPENWEATHER_BASE_URL'] = os.getenv('OPENWEATHER_BASE_URL')
@@ -20,8 +20,8 @@ app.weather_collection = db['weather_data']
 
 
 
-# Obtendo a chave da API de variáveis de ambiente
+# Retrieving the API key from environment variables
 app.config['API_KEY'] = os.getenv('OPENWEATHER_API_KEY')
 
-# Importa as rotas depois da configuração do app
+# Import routes after the app configuration
 from app import routes

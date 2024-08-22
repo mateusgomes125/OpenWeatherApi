@@ -7,7 +7,7 @@ import time
 import json
 from bson import json_util
 
-# Função para coletar dados do tempo de uma cidade específica pelo city_id usando aiohttp
+# Function to collect weather data for a specific city by city_id using aiohttp
 async def get_weather_by_city_id(session, city_id):
     base_url = app.config['OPENWEATHER_BASE_URL']
     params = {
@@ -44,20 +44,20 @@ def initialize_city_records(user_id):
 
 
     for city_id in city_ids:
-        # Verifica se a cidade já está registrada para esse user_id
+        # Check if the city is already recorded for this user_id
         existing_record = app.cities_collection.find_one({"user_id": user_id, "city_id": city_id})
         
         if not existing_record:
-            # Insere o registro com collected = false
+            # Insert the record with collected = false
             app.cities_collection.insert_one({
                 "user_id": user_id,
                 "city_id": city_id,
                 "collected": False
             })
-            print(f"cidade: {city_id} inserida.")
+            print(f"city: {city_id} inserted.")
 
 async def collect_and_store_weather_data(user_id):
-    # Pega todos os registros não coletados para esse user_id
+    # Get all uncollected records for this user_id
     uncollected_cities = list(app.cities_collection.find({"user_id": user_id, "collected": False}))
 
     city_count = 0
@@ -66,7 +66,7 @@ async def collect_and_store_weather_data(user_id):
     async with aiohttp.ClientSession() as session:
          for city in uncollected_cities:
             city_id = city["city_id"]
-            # Faz a requisição HTTP e obtém os dados meteorológicos
+            # Make the HTTP request and get the weather data
             weather_data = await get_weather_by_city_id(session, city_id)
             weather_data = {
                             "temperature": weather_data["main"]["temp"],
@@ -74,34 +74,34 @@ async def collect_and_store_weather_data(user_id):
                         }
 
             if weather_data:
-                # Adiciona a data e marca como coletado
+                # Add the date and mark as collected
                 weather_data["datetime"] = datetime.now()
                 weather_data["collected"] = True
 
-                # Atualiza o registro com os dados meteorológicos e marca collected como true
+                # Update the record with weather data and mark collected as true
                 app.cities_collection.update_one(
                     {"user_id": user_id, "city_id": city_id},
                     {"$set": weather_data}
                 )
-                print(f"dados meteorológicos da cidade {city_id} do usuário {user_id} inserido.")
+                print(f"weather data for city {city_id} of user {user_id} inserted.")
 
             city_count += 1
 
-            # Verifica se atingiu o limite de 60 cidades
+            # Check if the limit of 60 cities has been reached
             if city_count >= 60:
-                print('limite de cidade por minuto atingido. aguardando timeout.')
+                print('city limit per minute reached. waiting for timeout.')
                 elapsed_time = time.time() - start_time
                 if elapsed_time < 60:
-                    # Aguarda até completar 1 minuto
+                    # Wait until 1 minute is complete
                     await asyncio.sleep(60 - elapsed_time)
-                # Reinicia o contador e o tempo
+                # Reset the counter and time
                 city_count = 0
                 start_time = time.time()
 
-            # Intervalo de 1 segundo para espaçar as requisições
+            # 1-second interval to space out the requests
             await asyncio.sleep(1)
 
-# Rota POST para armazenar dados meteorológicos
+# POST route to store weather data
 @app.route('/weather', methods=['POST'])
 async def store_weather_data():
     data = request.json
@@ -110,47 +110,47 @@ async def store_weather_data():
     if not user_id:
         return jsonify({"error": "user_id is required"}), 400
     
-    # Inicializa os registros das cidades
+    # Initialize the city records
     initialize_city_records(user_id)
     
-    print('cidades registradas.')
+    print('cities registered.')
 
-    # Inicia a coleta assíncrona dos dados meteorológicos
+    # Start asynchronous data collection
     executor.submit(asyncio.run, collect_and_store_weather_data(user_id))
     
     return jsonify({"message": "Data collection started"}), 202
 
-# Rota GET para obter o progresso
+# GET route to get progress
 @app.route('/weather/<user_id>', methods=['GET'])
 def get_progress(user_id):
-    # Total de cidades associadas a esse user_id
+    # Total cities associated with this user_id
     total_cities = app.cities_collection.count_documents({"user_id": user_id})
     
-    # Cidades coletadas associadas a esse user_id
+    # Collected cities associated with this user_id
     collected_cities = app.cities_collection.count_documents({"user_id": user_id, "collected": True})
 
-    # Cálculo do progresso
+    # Progress calculation
     progress = (collected_cities / total_cities) * 100 if total_cities > 0 else 0
 
     return jsonify({"user_id": user_id, "progress": progress, "collected": collected_cities})
 
-# Rota GET para obter todos os registros do usuário
+# GET route to get all user records
 @app.route('/city/<user_id>', methods=['GET'])
 def get_cities(user_id):
 
     projection = {
-        '_id': 0,           # Excluir o campo _id
-        'city_id': 1,       # Incluir o campo city_id
+        '_id': 0,           
+        'city_id': 1,       
             'datetime': {
                 '$dateToString': {
-                    'format': '%Y-%m-%d %H:%M:%S',  # Formato desejado
+                    'format': '%Y-%m-%d %H:%M:%S',  
                     'date': '$datetime',
-                    'timezone': 'UTC'  # Ajustar conforme necessário
+                    'timezone': 'UTC'   
                 }
             },
-        'humidity': 1,      # Incluir o campo humidity
-        'temperature': 1,   # Incluir o campo temperature
-        'user_id': 1        # Incluir o campo user_id
+        'humidity': 1,      # Include the humidity field
+        'temperature': 1,   # Include the temperature field
+        'user_id': 1        # Include the user_id field
     }
     cities = app.cities_collection.find({"user_id": user_id}, projection)
 
