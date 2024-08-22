@@ -12,6 +12,7 @@ Esta aplicação é uma API de serviço construída em Python usando Flask. Ela 
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [MongoDB](https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.12-signed.msi)
 
 ## Configuração e Execução
 
@@ -97,7 +98,7 @@ Passos necessários:
   # Excução do teste
   atribua 'test' à variável de ambiente FLASK_ENV no arquivo .env na raíz do projeto
   FLASK_ENV=test
-  
+
   pytest -s test/test_app.py
 
 
