@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      OPENWEATHER_API_KEY: "b84daf595e3940813c997a11bc8d49ed"
+      OPENWEATHER_BASE_URL: "http://api.openweathermap.org/data/2.5/weather"
+      MONGO_URI: "mongodb://mongo:27017/"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
